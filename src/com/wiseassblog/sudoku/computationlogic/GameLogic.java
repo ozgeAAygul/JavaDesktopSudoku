@@ -1,5 +1,7 @@
 package com.wiseassblog.sudoku.computationlogic;
 
+import com.wiseassblog.sudoku.constants.GameState;
+
 // İlk boş hücreyi bulunca true döner
 
 public class GameLogic {
@@ -97,6 +99,27 @@ public class GameLogic {
             }
         }
     return false;
+    }
+
+    // Oyunun devam veya bitiş durumuna karar verme
+    // Tahtada boş hücre veya kural ihlali varsa oyun devam edecek (ACTIVE)
+    // Tahta tamamen dolu ve kurallara uygunsa oyun tamamlanır (COMPLETE)
+
+    public static GameState checkForCompletion(int[][] grid) {
+        if (tilesAreNotFilled(grid)){
+            return GameState.ACTIVE;
+        }
+
+        if (sudokuIsInvalid(grid)) {
+            return GameState.ACTIVE;
+        }
+
+        return GameState.COMPLETE;
+    }
+
+    // Tahta yarımken eklenilen bir sayının herhangi bir kuralla çakışıp çakışmadığını kontrol eden metot
+    public static boolean sudokuIsInvalid(int[][] grid) {
+        return rowsAreInvalid(grid) || columnsAreInvalid(grid) || squaresAreInvalid(grid);
     }
 
 }
